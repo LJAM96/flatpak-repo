@@ -1,0 +1,111 @@
+name: Build Flatpak Repository
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [new-flatpak]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-47
+      options: --privileged
+    
+    steps:
+      - name: Checkout repo branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+      
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y ostree flatpak flatpak-builder git
+      
+      - name: Initialize OSTree repo if needed
+        run: |
+          if [ ! -d "repo" ]; then
+            ostree init --mode=archive-z2 --repo=repo
+            echo "Initialized new OSTree repository"
+          else
+            echo "OSTree repository already exists"
+          fi
+      
+      - name: Build s-art
+        run: |
+          git clone https://github.com/${{ github.repository_owner }}/s-art.git s-art-build
+          cd s-art-build
+          git checkout main || git checkout master
+          flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.sart.json
+          cd ..
+          rm -rf s-art-build
+      
+      - name: Build cryptomator-gtk
+        run: |
+          git clone --recursive https://github.com/${{ github.repository_owner }}/cryptomator-gtk.git cryptomator-gtk-build
+          cd cryptomator-gtk-build
+          git checkout main || git checkout master
+          flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.cryptomatorgtk.yml
+          cd ..
+          rm -rf cryptomator-gtk-build
+      
+      - name: Update static deltas
+        run: |
+          ostree --repo=repo static-delta generate --min-fallback-size=0 --max-bsdiff-size=0 || true
+          ostree --repo=repo summary -u
+      
+      - name: Generate index.html
+        run: |
+          cat > index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Personal Flatpak Repository</title>
+              <style>
+                  body { font-family: system-ui; max-width: 800px; margin: 50px auto; padding: 20px; }
+                  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+                  pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+              </style>
+          </head>
+          <body>
+              <h1>Personal Flatpak Repository</h1>
+              <p>This repository hosts Flatpak applications for easy installation and automatic updates.</p>
+              
+              <h2>Setup</h2>
+              <p>Add this repository to your system:</p>
+              <pre>flatpak remote-add --user --if-not-exists ljam96-repo https://${{ github.repository_owner }}.github.io/flatpak-repo/repo</pre>
+              
+              <h2>Available Applications</h2>
+              
+              <h3>s-art</h3>
+              <p>Steam Art Manager</p>
+              <pre>flatpak install ljam96-repo io.github.ljam96.sart</pre>
+              
+              <h3>cryptomator-gtk</h3>
+              <p>GTK frontend for Cryptomator</p>
+              <pre>flatpak install ljam96-repo io.github.ljam96.cryptomatorgtk</pre>
+              
+              <h2>Updates</h2>
+              <p>Applications installed from this repository will update automatically with:</p>
+              <pre>flatpak update</pre>
+              
+              <h2>Remove Repository</h2>
+              <pre>flatpak remote-delete ljam96-repo</pre>
+          </body>
+          </html>
+          EOF
+      
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add repo/ index.html
+          git commit -m "Update Flatpak repository - $(date -u +%Y-%m-%d)" || echo "No changes to commit"
+          git push origin gh-pages
