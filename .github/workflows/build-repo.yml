@@ -28,6 +28,11 @@ jobs:
         run: |
           dnf install -y ostree flatpak flatpak-builder git
       
+      - name: Install Flatpak SDK extensions
+        run: |
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install -y flathub org.freedesktop.Sdk.Extension.openjdk17//47
+      
       - name: Initialize OSTree repo if needed
         run: |
           if [ ! -d "repo" ]; then
