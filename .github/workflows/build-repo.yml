@@ -26,8 +26,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y ostree flatpak flatpak-builder git
+          dnf install -y ostree flatpak flatpak-builder git
       
       - name: Initialize OSTree repo if needed
         run: |
