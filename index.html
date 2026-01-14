@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Flatpak Repository</title>
+    <style>
+        body { font-family: system-ui; max-width: 800px; margin: 50px auto; padding: 20px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Personal Flatpak Repository</h1>
+    <p>This repository hosts Flatpak applications for easy installation and automatic updates.</p>
+    
+    <h2>Setup</h2>
+    <p>Add this repository to your system:</p>
+    <pre>flatpak remote-add --user --if-not-exists ljam96-repo https://LJAM96.github.io/flatpak-repo/repo</pre>
+    
+    <h2>Available Applications</h2>
+    
+    <h3>s-art</h3>
+    <p>Steam Art Manager</p>
+    <pre>flatpak install ljam96-repo io.github.ljam96.sart</pre>
+    
+    <h3>cryptomator-gtk</h3>
+    <p>GTK frontend for Cryptomator</p>
+    <pre>flatpak install ljam96-repo io.github.ljam96.cryptomatorgtk</pre>
+    
+    <h2>Updates</h2>
+    <p>Applications installed from this repository will update automatically with:</p>
+    <pre>flatpak update</pre>
+    
+    <h2>Remove Repository</h2>
+    <pre>flatpak remote-delete ljam96-repo</pre>
+</body>
+</html>
