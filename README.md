@@ -12,7 +12,7 @@ Self-hosted Flatpak repository for distributing my Linux applications with autom
 ### Add the repository
 
 ```bash
-flatpak remote-add --user --if-not-exists ljam96-repo https://YOURUSERNAME.github.io/flatpak-repo/repo
+flatpak remote-add --user --if-not-exists ljam96-repo https://ljam96.github.io/flatpak-repo/repo
 ```
 
 ### Install applications
