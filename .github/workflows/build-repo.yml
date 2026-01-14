@@ -44,7 +44,7 @@ jobs:
           git checkout main || git checkout master
           flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.sart.json
           cd ..
-          rm -rf s-art-build
+          rm -rf s-art-build || true
       
       - name: Build cryptomator-gtk
         run: |
@@ -53,7 +53,7 @@ jobs:
           git checkout main || git checkout master
           flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.cryptomatorgtk.yml
           cd ..
-          rm -rf cryptomator-gtk-build
+          rm -rf cryptomator-gtk-build || true
       
       - name: Update static deltas
         run: |
