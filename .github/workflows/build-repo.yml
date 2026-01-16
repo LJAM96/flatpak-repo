@@ -51,14 +51,14 @@ jobs:
           cd ..
           rm -rf s-art-build || true
       
-      - name: Build cryptomator-gtk
+      - name: Build locker
         run: |
-          git clone --recursive https://github.com/${{ github.repository_owner }}/cryptomator-gtk.git cryptomator-gtk-build
-          cd cryptomator-gtk-build
+          git clone --recursive https://github.com/${{ github.repository_owner }}/locker.git locker-build
+          cd locker-build
           git checkout main || git checkout master
-          flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.cryptomatorgtk.yml
+          flatpak-builder --force-clean --repo=../repo --default-branch=stable build-dir io.github.ljam96.locker.yml
           cd ..
-          rm -rf cryptomator-gtk-build || true
+          rm -rf locker-build || true
       
       - name: Update static deltas
         run: |
@@ -92,9 +92,9 @@ jobs:
               <p>Steam Art Manager</p>
               <pre>flatpak install ljam96-repo io.github.ljam96.sart</pre>
               
-              <h3>cryptomator-gtk</h3>
+              <h3>locker</h3>
               <p>GTK frontend for Cryptomator</p>
-              <pre>flatpak install ljam96-repo io.github.ljam96.cryptomatorgtk</pre>
+              <pre>flatpak install ljam96-repo io.github.ljam96.locker</pre>
               
               <h2>Updates</h2>
               <p>Applications installed from this repository will update automatically with:</p>

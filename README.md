@@ -5,7 +5,7 @@ Self-hosted Flatpak repository for distributing my Linux applications with autom
 ## Hosted Applications
 
 - **s-art** - Steam Art Manager
-- **cryptomator-gtk** - GTK frontend for Cryptomator
+- **locker** - GTK frontend for Cryptomator
 
 ## For Users
 
@@ -19,7 +19,7 @@ flatpak remote-add --user --if-not-exists ljam96-repo https://ljam96.github.io/f
 
 ```bash
 flatpak install ljam96-repo io.github.ljam96.sart
-flatpak install ljam96-repo io.github.ljam96.cryptomatorgtk
+flatpak install ljam96-repo io.github.ljam96.locker
 ```
 
 ### Update applications

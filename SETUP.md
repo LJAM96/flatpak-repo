@@ -30,8 +30,8 @@ git push -u origin gh-pages
 5. Click **Run workflow**
 
 This will:
-- Clone both s-art and cryptomator-gtk
-- Build them as Flatpaks
+  - Clone both s-art and locker
+  - Build them as Flatpaks
 - Commit them to the OSTree repository
 - Push to gh-pages (GitHub Pages will serve it)
 
@@ -45,7 +45,7 @@ flatpak remote-add --user --if-not-exists ljam96-repo https://YOURUSERNAME.githu
 
 # Install apps
 flatpak install ljam96-repo io.github.ljam96.sart
-flatpak install ljam96-repo io.github.ljam96.cryptomatorgtk
+flatpak install ljam96-repo io.github.ljam96.locker
 
 # Updates work automatically
 flatpak update
@@ -72,7 +72,7 @@ flatpak update
 To publish new versions, just re-run the workflow manually:
 - Go to Actions → Build Flatpak Repository → Run workflow
 
-Or set up webhooks from s-art/cryptomator-gtk repos to trigger automatically on releases.
+Or set up webhooks from s-art/locker repos to trigger automatically on releases.
 
 ## Next Steps
 
